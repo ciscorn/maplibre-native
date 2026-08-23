@@ -4,21 +4,10 @@ permissions:
   contents: write
 
 on:
-  push:
-    branches:
-      - minimal-core-release
-    paths:
-      - .github/workflows/core-release-minimal.yml
   workflow_dispatch:
-    inputs:
-      core_ref:
-        description: MapLibre Native commit to package
-        required: true
-        default: f442c704b806d6f1e64242aa462a31c6f128cf47
-        type: string
 
 concurrency:
-  group: core-release-minimal-${{ inputs.core_ref || 'f442c704b806d6f1e64242aa462a31c6f128cf47' }}
+  group: core-release-minimal-${{ github.sha }}
   cancel-in-progress: false
 
 jobs:
@@ -29,7 +18,6 @@ jobs:
     steps:
       - uses: actions/checkout@9c091bb21b7c1c1d1991bb908d89e4e9dddfe3e0 # v7.0.0
         with:
-          ref: ${{ inputs.core_ref || 'f442c704b806d6f1e64242aa462a31c6f128cf47' }}
           submodules: recursive
 
       - name: Resolve and verify core revision
